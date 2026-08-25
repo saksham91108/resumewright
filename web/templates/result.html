@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ filename or "portfolio" }} — resumewright</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">resumewright<span class="dot">.</span></div>
+    <div class="version">v1.0 — build complete</div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="trace-section" aria-hidden="true">
+    <svg class="trace" viewBox="0 0 960 90" preserveAspectRatio="xMidYMid meet">
+      <line class="trace-line done" x1="60" y1="45" x2="252" y2="45"></line>
+      <line class="trace-line done" x1="252" y1="45" x2="444" y2="45"></line>
+      <line class="trace-line done" x1="444" y1="45" x2="636" y2="45"></line>
+      <line class="trace-line done" x1="636" y1="45" x2="828" y2="45"></line>
+      <line class="trace-line done" x1="828" y1="45" x2="900" y2="45"></line>
+
+      <g class="trace-node done" transform="translate(60,45)"><circle class="trace-node-circle" r="9"></circle><text class="trace-node-label" y="-18" text-anchor="middle">pdf</text></g>
+      <g class="trace-node done" transform="translate(252,45)"><circle class="trace-node-circle" r="9"></circle><text class="trace-node-label" y="-18" text-anchor="middle">extract</text></g>
+      <g class="trace-node done" transform="translate(444,45)"><circle class="trace-node-circle" r="9"></circle><text class="trace-node-label" y="-18" text-anchor="middle">validate</text></g>
+      <g class="trace-node done" transform="translate(636,45)"><circle class="trace-node-circle" r="9"></circle><text class="trace-node-label" y="-18" text-anchor="middle">gemini</text></g>
+      <g class="trace-node done" transform="translate(828,45)"><circle class="trace-node-circle" r="9"></circle><text class="trace-node-label" y="-18" text-anchor="middle">render</text></g>
+    </svg>
+  </section>
+
+  <section class="result-hero">
+    <p class="eyebrow"><span class="bar"></span>pipeline complete — job {{ job_id or "—" }}</p>
+    <h1 style="font-size:clamp(26px,3.6vw,36px);">Your portfolio is <span class="accent">live</span>.</h1>
+    <p class="sub">Built from {{ filename or "your résumé" }} using the {{ template or "ledger" }} template. Preview it below, or open it in a new tab.</p>
+  </section>
+
+  <div class="reveal-frame-wrap">
+    <div class="reveal-toolbar">
+      <span>/view/{{ job_id or "job" }}/{{ filename or "index.html" }}</span>
+      <a href="{{ portfolio_url or ('/view/' ~ job_id ~ '/' ~ filename) }}" target="_blank" rel="noopener">open in new tab ↗</a>
+    </div>
+    <div class="reveal-scanline" id="scanline"></div>
+    <iframe id="portfolio-frame"
+            src="{{ portfolio_url or ('/view/' ~ job_id ~ '/' ~ filename) }}"
+            title="Generated portfolio preview"
+            loading="eager"></iframe>
+  </div>
+
+  <div class="generate-bar" style="padding-top:20px;">
+    <span class="status-text"><span class="ok">✓</span> generated in {{ duration or "—" }}</span>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <a href="/download/{{ job_id }}/{{ filename }}" class="btn" download>
+        <span>download .zip</span><span class="arrow">↓</span>
+      </a>
+      <a href="/" class="btn"><span>build another</span><span class="arrow">→</span></a>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer wrap">
+  <span>resumewright — pipeline v1.0</span>
+  <span>job {{ job_id or "—" }}</span>
+</footer>
+
+<script>
+  (function(){
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var scan = document.getElementById('scanline');
+    if(reduceMotion && scan){ scan.remove(); }
+    else if(scan){
+      setTimeout(function(){ scan.remove(); }, 1300);
+    }
+  })();
+</script>
+</body>
+</html>
