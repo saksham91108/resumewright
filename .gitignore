@@ -1,0 +1,11 @@
+.env
+web/.env
+__pycache__/
+**/__pycache__/
+*.pyc
+venv/
+.venv/
+output/*.html
+output/*.css
+!output/.gitkeep
+web/web_output/

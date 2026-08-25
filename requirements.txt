@@ -1,0 +1,7 @@
+pdfplumber
+pytesseract
+pdf2image
+python-docx
+google-genai
+python-dotenv
+jinja2
