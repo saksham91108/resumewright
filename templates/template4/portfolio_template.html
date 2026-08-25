@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ name }} — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="cursor-dot"></div>
+<div id="cursor-ring"><span id="cursor-label"></span></div>
+
+<nav id="nav" class="on-dark">
+  <div class="nav-inner">
+    <a href="#hero" class="logo"><span class="dot"></span><span>{{ name|upper }}</span></a>
+    <ul class="nav-links" id="navLinks">
+      {% if summary %}<li><a href="#about" data-cursor="GO">About</a></li>{% endif %}
+      {% if skills %}<li><a href="#skills" data-cursor="GO">Skills</a></li>{% endif %}
+      {% if projects %}<li><a href="#projects" data-cursor="GO">Projects</a></li>{% endif %}
+      {% if achievements %}<li><a href="#log" data-cursor="GO">Log</a></li>{% endif %}
+      <li><a href="#contact" data-cursor="GO">Contact</a></li>
+      <li class="nav-cta"><span class="magnetic"><a href="#contact" class="btn btn-solid" data-cursor="HI">Say hello</a></span></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<section id="hero" class="dark">
+  <div class="status-bar">
+    <span class="status-indicator"><span class="blink"></span><span>PORTFOLIO READY</span></span>
+    <span id="clock">LOCAL 00:00:00</span>
+  </div>
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-mid">
+    <div class="hero-inner">
+      {% if contact.email %}<div class="kicker"><span class="blink"></span><span>Open to opportunities</span></div>{% endif %}
+      <h1 class="hero-name">{{ name }}</h1>
+      {% if headline %}<p class="hero-role">{{ headline }}</p>{% endif %}
+      <div class="hero-cta">
+        {% if projects %}<span class="magnetic"><a href="#projects" class="btn btn-solid" data-cursor="VIEW">View the work</a></span>{% endif %}
+        <span class="magnetic"><a href="#contact" class="btn btn-outline" data-cursor="HI">Get in touch</a></span>
+      </div>
+    </div>
+  </div>
+  {% if skills %}
+  <div class="marquee">
+    <div class="marquee-track">
+      {% for skill in skills %}<span>{{ skill }}</span>{% endfor %}
+      {% for skill in skills %}<span>{{ skill }}</span>{% endfor %}
+    </div>
+  </div>
+  {% endif %}
+</section>
+
+<!-- ================= ABOUT ================= -->
+{% if summary or education %}
+<section id="about">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="tag-eyebrow">About</span>
+      <h2>A closer look</h2>
+    </div>
+    <div class="about-grid">
+      {% if summary %}
+      <div class="about-text reveal">
+        <p>{{ summary }}</p>
+        {% if skills %}
+        <div class="chip-row">
+          {% for skill in skills[:8] %}<span class="chip">{{ skill }}</span>{% endfor %}
+        </div>
+        {% endif %}
+      </div>
+      {% endif %}
+      {% if education %}
+      <div class="edu-card reveal reveal-delay-1">
+        <h3>Education</h3>
+        {% for edu in education %}
+        <div class="degree">{{ edu.degree }}</div>
+        <div class="school">{{ edu.institution }}{% if edu.years %} · {{ edu.years }}{% endif %}</div>
+        {% if not loop.last %}<div style="height:16px"></div>{% endif %}
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- ================= SKILLS ================= -->
+{% if skills %}
+<section id="skills">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="tag-eyebrow">Skills</span>
+      <h2>What I build with</h2>
+    </div>
+    <div class="cluster-grid">
+      <div class="cluster">
+        <div class="cluster-top"><h4>Technical Toolkit</h4></div>
+        <div class="node-list">
+          {% for skill in skills %}
+          <div class="node-item">
+            <div class="node-header"><span>{{ skill }}</span></div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- ================= PROJECTS ================= -->
+{% if projects %}
+<section id="projects">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="tag-eyebrow">Projects</span>
+      <h2>Things I've built</h2>
+    </div>
+    <div class="project-grid">
+      {% for proj in projects %}
+      <div class="tilt-card reveal">
+        <div class="tilt-inner">
+          <div>
+            <div class="proj-index"><span>{{ "%02d"|format(loop.index) }}</span></div>
+            <h3>{{ proj.title }}</h3>
+            {% if proj.technologies %}<div class="stack">{{ proj.technologies|join(' · ') }}</div>{% endif %}
+            <p>{{ proj.description }}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- ================= LOG (Experience + Achievements) ================= -->
+{% if experience or achievements %}
+<section id="log">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="tag-eyebrow">Log</span>
+      <h2>Experience &amp; Milestones</h2>
+    </div>
+
+    {% if experience %}
+    <h3 class="subsection-title">Experience</h3>
+    <div class="log-list">
+      {% for exp in experience %}
+      <div class="log-row">
+        <div class="tag">{{ exp.duration }}</div>
+        <h4>{{ exp.title }}{% if exp.company %} — {{ exp.company }}{% endif %}</h4>
+        <p>{{ exp.description }}</p>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if achievements %}
+    <h3 class="subsection-title" style="margin-top: 50px;">Achievements &amp; Activities</h3>
+    <div class="cert-grid">
+      {% for item in achievements %}
+      <div class="cert-card"><h4>{{ item }}</h4></div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endif %}
+
+<!-- ================= CONTACT ================= -->
+<section id="contact" class="dark">
+  <canvas id="contact-canvas"></canvas>
+  <div class="contact-inner">
+    <span class="tag-eyebrow">Contact</span>
+    <h2>Let's build something<br>worth shipping</h2>
+
+    {% if contact.email %}
+    <span class="magnetic"><a href="mailto:{{ contact.email }}" class="big-email" data-cursor="EMAIL">{{ contact.email }}</a></span>
+    {% endif %}
+
+    <div class="contact-links">
+      {% if contact.phone %}
+      <span class="magnetic"><a class="contact-chip" href="tel:{{ contact.phone }}" data-cursor="CALL">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1L8 9.7a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.7 2z"></path></svg>
+        {{ contact.phone }}</a></span>
+      {% endif %}
+      {% if contact.linkedin %}
+      <span class="magnetic"><a class="contact-chip" href="https://{{ contact.linkedin }}" target="_blank" rel="noopener" data-cursor="OPEN">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="3"></rect><line x1="8" y1="11" x2="8" y2="16"></line><circle cx="8" cy="8" r="0.6" fill="currentColor"></circle><path d="M12 16v-3.2a1.8 1.8 0 0 1 3.6 0V16"></path></svg>
+        LinkedIn</a></span>
+      {% endif %}
+      {% if contact.github %}
+      <span class="magnetic"><a class="contact-chip" href="https://{{ contact.github }}" target="_blank" rel="noopener" data-cursor="OPEN">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2-.2 4.5-1 4.5-4.5a3.5 3.5 0 0 0-1-2.5 3.3 3.3 0 0 0-.1-2.5s-.9-.3-3 1a10.2 10.2 0 0 0-5.4 0c-2.1-1.3-3-1-3-1a3.3 3.3 0 0 0-.1 2.5A3.5 3.5 0 0 0 6 10.5c0 3.5 2.5 4.3 4.5 4.5-.4.4-.4.9-.5 1.5v3.5"></path></svg>
+        GitHub</a></span>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<div class="dark status-bar" as="footer">
+  <span>© {{ name }}</span>
+  <span>GENERATED PORTFOLIO</span>
+</div>
+
+<script>
+// Clock
+function tick(){
+  const el = document.getElementById('clock');
+  if(!el) return;
+  const d = new Date();
+  el.textContent = 'LOCAL ' + d.toTimeString().slice(0,8);
+}
+setInterval(tick, 1000); tick();
+
+// Custom cursor (desktop only)
+const dot = document.getElementById('cursor-dot');
+const ring = document.getElementById('cursor-ring');
+if (window.matchMedia('(pointer: fine)').matches) {
+  document.documentElement.classList.add('has-cursor');
+  let mx=0,my=0,rx=0,ry=0;
+  window.addEventListener('mousemove', e=>{ mx=e.clientX; my=e.clientY; dot.style.left=mx+'px'; dot.style.top=my+'px'; });
+  function loop(){ rx += (mx-rx)*0.18; ry += (my-ry)*0.18; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(loop); }
+  loop();
+  document.querySelectorAll('[data-cursor]').forEach(el=>{
+    el.addEventListener('mouseenter', ()=>{ ring.classList.add('cur-grow'); document.getElementById('cursor-label').textContent = el.dataset.cursor; });
+    el.addEventListener('mouseleave', ()=>{ ring.classList.remove('cur-grow'); });
+  });
+}
+
+// Nav toggle (mobile)
+const navToggle = document.getElementById('navToggle');
+const navLinks = document.getElementById('navLinks');
+if (navToggle) navToggle.addEventListener('click', ()=> navLinks.classList.toggle('open'));
+
+// Scroll reveal
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in-view'); io.unobserve(e.target); } });
+}, {threshold:0.15});
+revealEls.forEach(el=>io.observe(el));
+
+// Nav background on scroll
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', ()=>{ nav.classList.toggle('scrolled', window.scrollY > 40); });
+</script>
+
+</body>
+</html>

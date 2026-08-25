@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ name }} — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="scanlines"></div>
+
+<div class="terminal">
+
+  <div class="titlebar">
+    <div class="dots"><span></span><span></span><span></span></div>
+    <span class="title-text">{{ name|lower|replace(" ", "-") }}@portfolio: ~</span>
+  </div>
+
+  <div class="term-body">
+
+    <div class="line">
+      <span class="prompt">visitor@web</span><span class="colon">:</span><span class="path">~</span><span class="dollar">$</span>
+      <span class="cmd typewriter">whoami</span>
+    </div>
+    <div class="output name-output">
+      <h1>{{ name }}</h1>
+      {% if headline %}<p class="headline">{{ headline }}</p>{% endif %}
+    </div>
+
+    <div class="line">
+      <span class="prompt">visitor@web</span><span class="colon">:</span><span class="path">~</span><span class="dollar">$</span>
+      <span class="cmd">cat contact.txt</span>
+    </div>
+    <div class="output">
+      <ul class="kv-list">
+        {% if contact.email %}<li><span class="key">email</span><a href="mailto:{{ contact.email }}">{{ contact.email }}</a></li>{% endif %}
+        {% if contact.phone %}<li><span class="key">phone</span>{{ contact.phone }}</li>{% endif %}
+        {% if contact.linkedin %}<li><span class="key">linkedin</span><a href="https://{{ contact.linkedin }}" target="_blank" rel="noopener">{{ contact.linkedin }}</a></li>{% endif %}
+        {% if contact.github %}<li><span class="key">github</span><a href="https://{{ contact.github }}" target="_blank" rel="noopener">{{ contact.github }}</a></li>{% endif %}
+      </ul>
+    </div>
+
+    {% if summary %}
+    <div class="line"><span class="prompt">visitor@web</span><span class="colon">:</span><span class="path">~</span><span class="dollar">$</span> <span class="cmd">cat about.md</span></div>
+    <div class="output"><p class="prose">{{ summary }}</p></div>
+    {% endif %}
+
+    {% if skills %}
+    <div class="line"><span class="prompt">visitor@web</span><span class="colon">:</span><span class="path">~</span><span class="dollar">$</span> <span class="cmd">ls skills/</span></div>
+    <div class="output">
+      <div class="skill-cloud">
+        {% for skill in skills %}<span class="skill-chip">{{ skill }}</span>{% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    {% if education %}
+    <div class="line"><span class="prompt">visitor@web</span><span class="colon">:</span><span class="path">~</span><span class="dollar">$</span> <span class="cmd">cat education.log</span></div>
+    <div class="output">
+      {% for edu in education %}
+      <div class="record">
+        <p class="record-title">▸ {{ edu.degree }}</p>
+        <p class="record-sub">{{ edu.institution }}{% if edu.years %} [{{ edu.years }}]{% endif %}</p>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if experience %}
+    <div class="line"><span class="prompt">visitor@web</span><span class="colon">:</span><span class="path">~</span><span class="dollar">$</span> <span class="cmd">git log --oneline experience</span></div>
+    <div class="output">
+      {% for exp in experience %}
+      <div class="record">
+        <p class="record-title">▸ {{ exp.title }}{% if exp.company %} <span class="dim">@ {{ exp.company }}</span>{% endif %}</p>
+        {% if exp.duration %}<p class="record-sub">{{ exp.duration }}</p>{% endif %}
+        <p class="prose indent">{{ exp.description }}</p>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if projects %}
+    <div class="line"><span class="prompt">visitor@web</span><span class="colon">:</span><span class="path">~</span><span class="dollar">$</span> <span class="cmd">ls -la projects/</span></div>
+    <div class="output">
+      {% for proj in projects %}
+      <div class="project-card">
+        <p class="record-title">📁 {{ proj.title }}</p>
+        <p class="prose indent">{{ proj.description }}</p>
+        {% if proj.technologies %}
+        <div class="tech-line">
+          <span class="key">stack</span>
+          {% for tech in proj.technologies %}<span class="tech-chip">{{ tech }}</span>{% endfor %}
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if achievements %}
+    <div class="line"><span class="prompt">visitor@web</span><span class="colon">:</span><span class="path">~</span><span class="dollar">$</span> <span class="cmd">cat achievements.txt</span></div>
+    <div class="output">
+      <ul class="achievement-list">
+        {% for item in achievements %}<li>{{ item }}</li>{% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    <div class="line">
+      <span class="prompt">visitor@web</span><span class="colon">:</span><span class="path">~</span><span class="dollar">$</span>
+      <span class="cursor-block"></span>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

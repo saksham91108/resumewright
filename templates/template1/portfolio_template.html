@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ name }} — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="grain"></div>
+
+<header class="hero">
+  <div class="hero-inner">
+    <p class="eyebrow">Portfolio Dossier</p>
+    <h1 class="name">{{ name }}</h1>
+    {% if headline %}<p class="headline">{{ headline }}</p>{% endif %}
+    <div class="contact-row">
+      {% if contact.email %}<a href="mailto:{{ contact.email }}">{{ contact.email }}</a>{% endif %}
+      {% if contact.phone %}<span>{{ contact.phone }}</span>{% endif %}
+      {% if contact.linkedin %}<a href="https://{{ contact.linkedin }}" target="_blank" rel="noopener">LinkedIn ↗</a>{% endif %}
+      {% if contact.github %}<a href="https://{{ contact.github }}" target="_blank" rel="noopener">GitHub ↗</a>{% endif %}
+    </div>
+  </div>
+  <div class="hero-rule"></div>
+</header>
+
+<main>
+
+  {% if summary %}
+  <section class="entry" data-num="01">
+    <div class="entry-label"><span class="entry-index">01</span><span class="entry-title">Summary</span></div>
+    <div class="entry-body"><p class="lede">{{ summary }}</p></div>
+  </section>
+  {% endif %}
+
+  {% if skills %}
+  <section class="entry" data-num="02">
+    <div class="entry-label"><span class="entry-index">02</span><span class="entry-title">Skills</span></div>
+    <div class="entry-body">
+      <ul class="skill-grid">
+        {% for skill in skills %}<li>{{ skill }}</li>{% endfor %}
+      </ul>
+    </div>
+  </section>
+  {% endif %}
+
+  {% if education %}
+  <section class="entry" data-num="03">
+    <div class="entry-label"><span class="entry-index">03</span><span class="entry-title">Education</span></div>
+    <div class="entry-body">
+      {% for edu in education %}
+      <div class="record">
+        <h3>{{ edu.degree }}</h3>
+        <p class="record-meta">{{ edu.institution }}{% if edu.years %} · {{ edu.years }}{% endif %}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  {% if experience %}
+  <section class="entry" data-num="04">
+    <div class="entry-label"><span class="entry-index">04</span><span class="entry-title">Experience</span></div>
+    <div class="entry-body">
+      {% for exp in experience %}
+      <div class="record">
+        <h3>{{ exp.title }}{% if exp.company %} <span class="at">— {{ exp.company }}</span>{% endif %}</h3>
+        {% if exp.duration %}<p class="record-meta">{{ exp.duration }}</p>{% endif %}
+        <p>{{ exp.description }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  {% if projects %}
+  <section class="entry" data-num="05">
+    <div class="entry-label"><span class="entry-index">05</span><span class="entry-title">Projects</span></div>
+    <div class="entry-body">
+      {% for proj in projects %}
+      <div class="record project-record">
+        <h3>{{ proj.title }}</h3>
+        <p>{{ proj.description }}</p>
+        {% if proj.technologies %}
+        <div class="tech-row">
+          {% for tech in proj.technologies %}<span>{{ tech }}</span>{% endfor %}
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  {% if achievements %}
+  <section class="entry" data-num="06">
+    <div class="entry-label"><span class="entry-index">06</span><span class="entry-title">Achievements</span></div>
+    <div class="entry-body">
+      <ul class="achievement-list">
+        {% for item in achievements %}<li>{{ item }}</li>{% endfor %}
+      </ul>
+    </div>
+  </section>
+  {% endif %}
+
+</main>
+
+<footer>
+  <p>Generated dossier — {{ name }}</p>
+</footer>
+
+</body>
+</html>

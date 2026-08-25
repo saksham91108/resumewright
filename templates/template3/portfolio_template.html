@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ name }} — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="dot-nav" id="dotNav"></nav>
+
+<header class="hero" id="hero">
+  <div class="hero-content">
+    <p class="kicker">Portfolio</p>
+    <h1>{{ name }}</h1>
+    {% if headline %}<p class="role">{{ headline }}</p>{% endif %}
+    <div class="pills">
+      {% if contact.email %}<a class="pill" href="mailto:{{ contact.email }}">✉ Email</a>{% endif %}
+      {% if contact.linkedin %}<a class="pill" href="https://{{ contact.linkedin }}" target="_blank" rel="noopener">in LinkedIn</a>{% endif %}
+      {% if contact.github %}<a class="pill" href="https://{{ contact.github }}" target="_blank" rel="noopener">⌥ GitHub</a>{% endif %}
+      {% if contact.phone %}<span class="pill pill-static">{{ contact.phone }}</span>{% endif %}
+    </div>
+  </div>
+  <div class="hero-blob"></div>
+</header>
+
+<main>
+
+  {% if summary %}
+  <section class="block" id="summary">
+    <h2><span class="tag">About</span></h2>
+    <p class="summary-text">{{ summary }}</p>
+  </section>
+  {% endif %}
+
+  {% if skills %}
+  <section class="block" id="skills">
+    <h2><span class="tag">Skills</span></h2>
+    <div class="chip-field">
+      {% for skill in skills %}<span class="chip">{{ skill }}</span>{% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  {% if experience %}
+  <section class="block" id="experience">
+    <h2><span class="tag">Experience</span></h2>
+    <div class="timeline">
+      {% for exp in experience %}
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <h3>{{ exp.title }}</h3>
+          <p class="meta">{% if exp.company %}{{ exp.company }}{% endif %}{% if exp.duration %} · {{ exp.duration }}{% endif %}</p>
+          <p>{{ exp.description }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  {% if projects %}
+  <section class="block" id="projects">
+    <h2><span class="tag">Projects</span></h2>
+    <div class="card-grid">
+      {% for proj in projects %}
+      <div class="card">
+        <h3>{{ proj.title }}</h3>
+        <p>{{ proj.description }}</p>
+        {% if proj.technologies %}
+        <div class="chip-field small">
+          {% for tech in proj.technologies %}<span class="chip chip-outline">{{ tech }}</span>{% endfor %}
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  {% if education %}
+  <section class="block" id="education">
+    <h2><span class="tag">Education</span></h2>
+    {% for edu in education %}
+    <div class="edu-row">
+      <h3>{{ edu.degree }}</h3>
+      <p class="meta">{{ edu.institution }}{% if edu.years %} · {{ edu.years }}{% endif %}</p>
+    </div>
+    {% endfor %}
+  </section>
+  {% endif %}
+
+  {% if achievements %}
+  <section class="block" id="achievements">
+    <h2><span class="tag">Achievements</span></h2>
+    <ul class="achievement-grid">
+      {% for item in achievements %}<li>{{ item }}</li>{% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+
+</main>
+
+<footer>
+  <p>{{ name }} — built with care</p>
+</footer>
+
+</body>
+</html>
